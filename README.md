@@ -130,7 +130,7 @@ Dependencies:
 
 - To save time using SpringData by performing databases operations without code. Query methods.
 
-- To use CrudRepository interface.
+- To use CrudRepository interface. It is an interface that provides CRUD methods, like save. 
 
 - Query methods are methods that find information from the database and are declared on the repository interface. Example **findByDateOrderByNameDesc**. It is very importatnt to use correctly camelcase.
 
