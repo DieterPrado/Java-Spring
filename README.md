@@ -1,10 +1,18 @@
 # Java Spring
 ### Table of contents
-- General info
-- Technologies
-- Setup
-- Things learned
-- Commands
+- [General info](#general-info)
+- [Technologies](#technologies)
+- [Setup](#setup)
+- [Things learned](#things-learned)
+>- Spring.
+>- Benefits of using spring.
+>- Spring annotations.
+>- MVC design.
+>- Query methods.
+>- Graphic documentation.
+>- Data mapper.
+>- Dependency injection.
+- [Spring Annotations](#spring-annotations)
 
 
 ------------
@@ -52,58 +60,113 @@ Dependencies:
 
 **Within Intellij IDEA**
 
-###### Spring Boot Starter Data JPA 
+###### Dependencies
 - Copy the next code and insert it into the build.graddle file in the dependencies part of the code.
--  `<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa -->
+
+```java
+<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa -->
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-data-jpa</artifactId>
     <version>2.5.2</version>
-</dependency>`
+</dependency>
 
+<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+<dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    <version>42.2.23</version>
+</dependency>
 
-###### PostgreSQL JDBC Driver
-- Copy the next code and insert it into the build.graddle file in the dependencies part of the code.
-- `runtimeOnly 'org.postgresql:postgresql'`
+<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
+<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger2</artifactId>
+    <version>2.9.2</version>
+</dependency>
 
-###### SpringFox Swagger2
-- Copy the next code and insert it into the build.graddle file in the dependencies part of the code.
-- `implementation 'io.springfox:springfox-swagger2:2.9.2'`
+<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui -->
+<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger-ui</artifactId>
+    <version>2.9.2</version>
+</dependency>
 
-###### SpringFox Swagger UI
-- Copy the next code and insert it into the build.graddle file in the dependencies part of the code.
-- `implementation 'io.springfox:springfox-swagger-ui:2.9.2''`
+<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+    <version>2.5.2</version>
+</dependency>
 
-###### Spring Boot Starter Security
-- Copy the next code and insert it into the build.graddle file in the dependencies part of the code.
-- `implementation 'org.springframework.boot:spring-boot-starter-security:2.5.2'`
-
-###### JSON Web Token Support For The JVM
-- Copy the next code and insert it into the build.graddle file in the dependencies part of the code.
-- `implementation 'io.jsonwebtoken:jjwt:0.9.1'`
+<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
+<dependency>
+    <groupId>io.jsonwebtoken</groupId>
+    <artifactId>jjwt</artifactId>
+    <version>0.9.1</version>
+</dependency>
+```
 
 ------------
 ### Things learned
-- What spring is.
-- To use different app layers.
--  Spring annotations.
-- To not use primitive type of data in Spring.
-- To only create the required relationships between entities for better App performance.
-- To save time using SpringData by performing databases operations without code.
+- What spring is. Its an application framework and inversion of control container for the Java platform. The frameworks core features can be used by any Java application, but there are extensions for building web applications on top of the Java EE platform.
+
+- Advantages of using spring: 
+>- Develop enterprise-class applications using POJOs.
+>- Testing an application written with Spring is simple because environment-dependent code is moved into this framework. 
+>- MVC framework.
+> Consistent transaction management interface that can scale down to a local transaction (using a single database) and scale up to global transactions.
+
+- To use different app layers according to MVC pattern. MVC = model, view, controller.
+>- Model - It directly manages the data, logic and rules of the application.
+>- View - Any representation of information such as a chart, diagram or table.
+>- Controller - Accepts input and converts it to commands for the model or view.
+
+- Spring annotations. More details below in the annotations section.
+
+- To not use primitive type of data in Spring. For example, instead of int use Integer.
+
+- To only create the required relationships between entities for better App performance. It is not necessary to create all the relationships, only those that are goning to be actually used.
+
+- To save time using SpringData by performing databases operations without code. Query methods.
+
 - To use CrudRepository interface.
-- Query methods.
-- Data mapper pattern.
+
+- Query methods are methods that find information from the database and are declared on the repository interface. Example **findByDateOrderByNameDesc**. It is very importatnt to use correctly camelcase.
+
+- Data mapper pattern. A layer of Mappers that moves data between objects and a database while keeping them independent of each other and the mapper itself. Mapper means an object that sets up communication between two independent object. An example:
+```java
+@Mapper(componentModel = "spring")
+public interface CategoryMapper {
+    @Mappings({
+            @Mapping(source = "idCategoria", target = "categoryId"),
+            @Mapping(source = "descripcion", target = "category"),
+            @Mapping(source = "estado", target = "active")
+    })
+    Category toCategory(Categoria categoria);
+
+    @InheritInverseConfiguration
+    @Mapping(target = "productos", ignore = true)
+    Categoria toCategoria(Category category);
+
+}
+```
+
 - Work with an existing table that is in another language using data mapper. 
-- To inject dependencies.
-- To make graphic documentatio for an API using Springfox Swagger.
+
+- To inject dependencies. Dependency Injection is merely one concrete example of Inversion of Control. When writing a complex Java application, application classes should be as independent as possible.  Dependency Injection helps in gluing these classes together and at the same time keeping them independent. For example, class A is dependent of class B. Class B will get injected into class A by the IoC.
+
+- To make graphic documentation for an API using Springfox Swagger.
+
 - Make authentication required to certain API interactions.
+
 - Manage certain level of security.
 
 
 
 ------------
-### Commands
-|  Command | Function  |
+### Spring Annotations
+|  Annotations | Function  |
 | ------------ | ------------ |
 | @Springbootapplication | Tells Spring Boot that a class manages the app.   |
 | @Entitiy | Tells a java class that it is representing a table in the database.   |
@@ -127,7 +190,7 @@ Dependencies:
 | @GetMapping    | To obtain information  |
 | @Postmapping  | To save or update information  |
 | @Deletemapping | To delete information |
-| CrudRepository methods | save(), delete()|
+| Not an annotation - CrudRepository methods | save(), delete()|
 
 
 
